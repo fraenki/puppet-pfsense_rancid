@@ -1,0 +1,35 @@
+#!/bin/sh
+
+stty -echo
+
+echo -n "`hostname -s`#"
+while read cmd; do
+	echo "$cmd"
+	case ${cmd} in
+		exit)
+			exit
+			;;
+		"show controllers")
+			ifconfig
+			;;
+		"show flash")
+<%- if @diskusage == true -%>
+	   		df 
+<%- end -%>
+			;;
+		"show "*config*)
+			cat /conf/config.xml
+			echo "end"
+			;;
+		"show version")
+			echo "pfSense `cat /etc/version`";
+			;;
+		"write term")
+			cat /conf/config.xml
+			echo "end"
+			;;
+		*)
+			;;
+	esac
+	echo -n "`hostname -s`#"
+done
